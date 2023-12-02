@@ -55,6 +55,7 @@
 <script>
 import { ref } from "vue";
 import { useUsersStore } from "../stores/usersStore";
+import { useRouter } from "vue-router";
 
 export default {
   name: "Login",
@@ -62,31 +63,36 @@ export default {
     const email = ref("");
     const password = ref("");
     const signInError = ref("");
+    const router = useRouter();
+
     async function logInHandler() {
       const usersStore = useUsersStore();
-      const users = await usersStore.getUsers();
-      if (usersStore.checkUserExistence(email.value)) {
-        const currentUser = usersStore.checkUserExistence(
-          email.value
-        );
 
-        currentUser.password === password.value
-          ? (sessionStorage.setItem("loggedIn", "true"),
-            (window.location.href = "/"))
-          : (signInError.value =
-              "Wrong Password! Try again.");
+      // Check if the user exists
+      const currentUser = usersStore.checkUserExistence(email.value);
+
+      if (currentUser) {
+        // User exists, check password
+        if (currentUser.password === password.value) {
+          sessionStorage.setItem("loggedIn", "true");
+          router.push("/");
+        } else {
+          signInError.value = "Wrong Password! Try again.";
+        }
       } else {
         signInError.value =
-          "This email doesn't exist please register first";
+          "This email doesn't exist. Please register first.";
         setTimeout(() => {
-          window.location.href = "/register";
+          router.push("/register");
         }, 1000);
       }
     }
+
     return { email, password, logInHandler, signInError };
   },
 };
 </script>
+
 
 <style scoped>
 input {

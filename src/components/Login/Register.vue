@@ -82,6 +82,8 @@ import { ref } from "vue";
 import validatePassword from "../Composable/PasswordValidator.js";
 import validateEmail from "../Composable/EmailValidator.js";
 import { useUsersStore } from "../stores/usersStore.js";
+import { useRouter } from "vue-router";
+
 export default {
   name: "Register",
   setup() {
@@ -94,6 +96,7 @@ export default {
     const passwordInput = ref(null);
     const confirmPasswordInput = ref(null);
     const emailExistenceError = ref("");
+    const router = useRouter();
 
     async function registerHandler() {
       validatePassword(
@@ -106,26 +109,32 @@ export default {
 
       validateEmail(emailInput, email, emailError);
 
-      if (
-        passwordError.value == "" &&
-        emailError.value == ""
-      ) {
+      if (passwordError.value === "" && emailError.value === "") {
         const users = useUsersStore();
+        const userExists = users.checkUserExistence(email.value);
 
-        if (users.checkUserExistence(email.value)) {
-          emailExistenceError.value =
-            "This email already exists";
+        if (userExists) {
+          emailExistenceError.value = "This email already exists";
         } else {
           const newUser = {
             email: email.value,
             password: password.value,
           };
-          const stringifiedUser = JSON.stringify(newUser);
-          users.addUser(stringifiedUser);
-          setTimeout(
-            () => (window.location.href = "/login"),
-            1000
-          );
+
+          try {
+            // Attempt to add the user
+            const stringifiedUser = JSON.stringify(newUser);
+            users.addUser(stringifiedUser);
+
+            // Redirect to login after successful registration
+            setTimeout(() => {
+              router.push("/login");
+            }, 1000);
+          } catch (error) {
+            // Handle error during user creation
+            console.error("Error creating user:", error);
+            // Optionally show an error message to the user
+          }
         }
       }
     }
@@ -145,6 +154,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 input {
