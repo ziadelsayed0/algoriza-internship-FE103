@@ -1,1 +1,11 @@
-# algoriza-internship-FE103
+# my-dream-place
+
+## Project setup
+```
+npm install
+```
+
+### Compiles for development
+```
+npm run serve
+```
