@@ -10,4 +10,4 @@ npm install
 npm run serve
 ```
 <hr>
-<img src="">
+<img src="project pic.jepg">
