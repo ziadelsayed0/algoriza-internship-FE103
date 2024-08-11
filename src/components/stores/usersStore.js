@@ -13,7 +13,7 @@ export const useUsersStore = defineStore("Users", {
   actions: {
     async getUsers() {
       const res = await fetch(
-        "http://localhost:4000/users"
+        "http://localhost:8080/users"
       );
 
       const users = await res.json();
@@ -27,7 +27,7 @@ export const useUsersStore = defineStore("Users", {
     },
 
     addUser(user) {
-      fetch("http://localhost:4000/users", {
+      fetch("http://localhost:8080/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: user,
