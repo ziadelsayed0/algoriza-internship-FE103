@@ -1,4 +1,10 @@
-# my-dream-place
+# My-dream-place
+## Technologies
+<ul>
+  <li>Vue.js</li>
+  <li>Tailwind</li>
+  <li>Pine</li>
+</ul>
 
 ## Project setup
 ```
