@@ -3,7 +3,7 @@
 <ul>
   <li>Vue.js</li>
   <li>Tailwind</li>
-  <li>Pine</li>
+  <li>Pinia</li>
 </ul>
 
 ## Project setup
